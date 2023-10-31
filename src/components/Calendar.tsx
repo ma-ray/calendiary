@@ -5,7 +5,9 @@ type DayProps = {
 const Day: React.FC<DayProps> = ({ dayNumber }) => {
   return (
     <div className="flex items-center justify-center border border-black">
-      <span>{dayNumber}</span>
+      <h4 className="scroll-m-20 text-2xl font-medium tracking-tight">
+        {dayNumber}
+      </h4>
     </div>
   )
 }
