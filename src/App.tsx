@@ -1,10 +1,10 @@
 import './App.css'
-import Calendar from './components/Calendar'
+import HomePage from './Home'
 
 function App() {
   return (
     <div>
-      <Calendar />
+      <HomePage />
     </div>
   )
 }
