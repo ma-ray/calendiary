@@ -4,7 +4,7 @@ const HomePage = () => {
   return (
     <div>
       <p>home page</p>
-      <Calendar />
+      <Calendar month={11} year={2023} />
     </div>
   )
 }

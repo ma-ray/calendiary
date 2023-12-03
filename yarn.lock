@@ -1089,6 +1089,11 @@ cacheable-request@^7.0.2:
     normalize-url "^6.0.1"
     responselike "^2.0.0"
 
+calendar-base@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/calendar-base/-/calendar-base-2.0.1.tgz#73725be0862ba65da7fd047c5e0bc274691d2258"
+  integrity sha512-LD155Rg0kF52k3v0XE1FSBkns/jUZFoG97riESoBvHP+9jcjvQFRqcC0NIxG41yhNRGTTleoplhyzmaS6m7/kQ==
+
 callsites@^3.0.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/callsites/-/callsites-3.1.0.tgz#b3630abd8943432f54b3f0519238e33cd7df2f73"
