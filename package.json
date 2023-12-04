@@ -2,6 +2,12 @@
   "name": "calendiary",
   "private": true,
   "version": "0.0.0",
+  "description": "digital diary + calendar integrated into one",
+  "author": {
+    "name": "Raymond Ma",
+    "email": "maraymond2001@gmail.com",
+    "url": "https://ma-ray.github.io"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build && electron-builder",
