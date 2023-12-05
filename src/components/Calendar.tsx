@@ -6,7 +6,7 @@ type DayProps = {
 
 const Day: React.FC<DayProps> = ({ dayNumber }) => {
   return (
-    <div className="flex items-center justify-center border border-black">
+    <div className="flex items-center justify-center border border-black h-24 w-24">
       <h4 className="scroll-m-20 text-2xl font-medium tracking-tight">
         {dayNumber}
       </h4>
@@ -46,18 +46,14 @@ const Calendar: React.FC<CalendarProps> = ({ month, year }) => {
       <h1 className="scroll-m-20 text-4xl font-bold tracking-tight">
         {`${months[month]} ${year}`}
       </h1>
-      <div className="grid md:grid-cols-[repeat(7,5rem)] lg:grid-cols-[repeat(7,8rem)] text-center">
+      <div className="grid grid-cols-7 text-center">
         {['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'].map((wd) => (
           <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">
             {wd}
           </h4>
         ))}
       </div>
-      <div
-        className={`border border-black grid md:grid-cols-[repeat(7,5rem)] lg:grid-cols-[repeat(7,8rem)] md:grid-rows-[repeat(${
-          days.length / 7
-        },5rem)] lg:grid-rows-[repeat(${days.length / 7},8rem)]`}
-      >
+      <div className={`border border-black grid grid-cols-7`}>
         {days.map(
           (num) =>
             num && <Day key={`${num.day}-${num.month}`} dayNumber={num.day} />
