@@ -1,14 +1,34 @@
-import { Calendar as CalendarBase } from 'calendar-base'
+import { Calendar as CalendarBase, CalendarDate } from 'calendar-base'
+import moment from 'moment'
 
 type DayProps = {
-  dayNumber: number
+  date: CalendarDate
 }
 
-const Day: React.FC<DayProps> = ({ dayNumber }) => {
+const Day: React.FC<DayProps> = ({ date }) => {
+  const dayPassed = moment([date.year, date.month, date.day]).isBefore(
+    moment().startOf('day')
+  )
+
+  const isToday = moment([date.year, date.month, date.day]).isSame(
+    moment().startOf('day')
+  )
+
+  const bg = date.siblingMonth
+    ? 'bg-daypassed'
+    : dayPassed
+    ? 'bg-daypassed'
+    : isToday
+    ? 'bg-today'
+    : ''
+
   return (
-    <div className="flex items-center justify-center border border-black h-24 w-24">
-      <h4 className="scroll-m-20 text-2xl font-medium tracking-tight">
-        {dayNumber}
+    <div
+      className={`flex items-center justify-center border border-black h-24 w-24 col ${bg}
+      }`}
+    >
+      <h4 className="scroll-m-20 text-2xl font-bold tracking-tight">
+        {date.day}
       </h4>
     </div>
   )
@@ -42,8 +62,8 @@ const Calendar: React.FC<CalendarProps> = ({ month, year }) => {
   const days = calendar.getCalendar(year, month)
 
   return (
-    <div className="inline-block">
-      <h1 className="scroll-m-20 text-4xl font-bold tracking-tight">
+    <div className="flex flex-col gap-3">
+      <h1 className="scroll-m-20 text-4xl font-black tracking-tight">
         {`${months[month]} ${year}`}
       </h1>
       <div className="grid grid-cols-7 text-center">
@@ -55,8 +75,8 @@ const Calendar: React.FC<CalendarProps> = ({ month, year }) => {
       </div>
       <div className={`border border-black grid grid-cols-7`}>
         {days.map(
-          (num) =>
-            num && <Day key={`${num.day}-${num.month}`} dayNumber={num.day} />
+          (date) =>
+            date && <Day key={`${date.day}-${date.month}`} date={date} />
         )}
       </div>
     </div>

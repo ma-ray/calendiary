@@ -33,6 +33,8 @@
     --ring: 222.2 84% 4.9%;
 
     --radius: 0.5rem;
+
+    font-family: 'Inter';
   }
 
   .dark {
@@ -73,4 +75,9 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('./assets/Inter-Regular.ttf');
 }
