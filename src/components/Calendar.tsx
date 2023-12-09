@@ -1,5 +1,6 @@
 import { Calendar as CalendarBase, CalendarDate } from 'calendar-base'
 import moment from 'moment'
+import { Link } from 'react-router-dom'
 
 type DayProps = {
   date: CalendarDate
@@ -27,9 +28,11 @@ const Day: React.FC<DayProps> = ({ date }) => {
       className={`flex items-center justify-center border border-black h-24 w-24 col ${bg}
       }`}
     >
-      <h4 className="scroll-m-20 text-2xl font-bold tracking-tight">
-        {date.day}
-      </h4>
+      <Link to={`/diary/${date.year}/${date.month}/${date.day}`}>
+        <h4 className="scroll-m-20 text-2xl font-bold tracking-tight">
+          {date.day}
+        </h4>
+      </Link>
     </div>
   )
 }
