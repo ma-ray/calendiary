@@ -1,6 +1,7 @@
 import { Calendar as CalendarBase, CalendarDate } from 'calendar-base'
 import moment from 'moment'
 import { Link } from 'react-router-dom'
+import { months } from '../util/time'
 
 type DayProps = {
   date: CalendarDate
@@ -46,21 +47,6 @@ const Calendar: React.FC<CalendarProps> = ({ month, year }) => {
   const calendar = new CalendarBase({
     siblingMonths: true,
   })
-
-  const months = [
-    'january',
-    'february',
-    'march',
-    'april',
-    'may',
-    'june',
-    'july',
-    'august',
-    'september',
-    'october',
-    'november',
-    'december',
-  ]
 
   const days = calendar.getCalendar(year, month)
 
