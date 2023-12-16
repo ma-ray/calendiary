@@ -35,6 +35,11 @@
     --radius: 0.5rem;
 
     font-family: 'Inter';
+    height: 100vh;
+  }
+
+  body {
+    height: 100vh;
   }
 
   .dark {
