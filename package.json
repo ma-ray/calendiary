@@ -15,6 +15,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@mdxeditor/editor": "^1.13.5",
     "calendar-base": "^2.0.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
