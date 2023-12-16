@@ -1,6 +1,14 @@
 import '@mdxeditor/editor/style.css'
 import { useParams } from 'react-router-dom'
-import { MDXEditor } from '@mdxeditor/editor'
+import {
+  MDXEditor,
+  headingsPlugin,
+  quotePlugin,
+  listsPlugin,
+  linkPlugin,
+  linkDialogPlugin,
+  markdownShortcutPlugin,
+} from '@mdxeditor/editor'
 import { months } from '../util/time'
 
 type ParamsType = {
@@ -11,6 +19,10 @@ type ParamsType = {
 
 const DiaryPage = () => {
   const { year, month, day } = useParams<ParamsType>()
+
+  const markdown = `
+  Hello
+`
 
   return (
     <div className="h-full">
@@ -24,9 +36,18 @@ const DiaryPage = () => {
           </h1>
         </div>
         <MDXEditor
-          markdown=""
+          markdown={markdown}
           className="pb-8"
           placeholder="write about your day"
+          plugins={[
+            headingsPlugin(),
+            quotePlugin(),
+            listsPlugin(),
+            linkPlugin(),
+            linkDialogPlugin({}),
+            markdownShortcutPlugin(),
+          ]}
+          contentEditableClassName="prose"
         />
       </div>
     </div>
