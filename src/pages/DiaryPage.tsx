@@ -8,6 +8,11 @@ import {
   linkPlugin,
   linkDialogPlugin,
   markdownShortcutPlugin,
+  toolbarPlugin,
+  UndoRedo,
+  BoldItalicUnderlineToggles,
+  BlockTypeSelect,
+  CreateLink,
 } from '@mdxeditor/editor'
 import { months } from '../util/time'
 
@@ -27,7 +32,7 @@ const DiaryPage = () => {
   return (
     <div className="h-full">
       <div className="flex flex-col gap-3 mx-auto w-1/2 pt-24">
-        <div className="flex gap-6">
+        <div className="flex gap-6 px-3">
           <h1 className="scroll-m-20 text-4xl font-black tracking-tight">
             {`${months[parseInt(month ?? '0')]} ${day}, ${year}`}
           </h1>
@@ -46,6 +51,16 @@ const DiaryPage = () => {
             linkPlugin(),
             linkDialogPlugin({}),
             markdownShortcutPlugin(),
+            toolbarPlugin({
+              toolbarContents: () => (
+                <>
+                  <UndoRedo />
+                  <BoldItalicUnderlineToggles />
+                  <BlockTypeSelect />
+                  <CreateLink />
+                </>
+              ),
+            }),
           ]}
           contentEditableClassName="prose max-w-none mdx-markdown pl-0"
         />
