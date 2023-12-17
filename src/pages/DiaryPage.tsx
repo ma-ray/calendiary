@@ -47,7 +47,7 @@ const DiaryPage = () => {
             linkDialogPlugin({}),
             markdownShortcutPlugin(),
           ]}
-          contentEditableClassName="prose mdx-markdown"
+          contentEditableClassName="prose max-w-none mdx-markdown pl-0"
         />
       </div>
     </div>
