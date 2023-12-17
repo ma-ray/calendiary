@@ -35,6 +35,11 @@
     --radius: 0.5rem;
 
     font-family: 'Inter';
+    height: 100vh;
+  }
+
+  body {
+    height: 100vh;
   }
 
   .dark {
@@ -80,4 +85,15 @@
 @font-face {
   font-family: 'Inter';
   src: url('./assets/Inter-Regular.ttf');
+}
+
+.mdx-markdown a {
+  color: #006adc;
+  text-decoration: none;
+}
+
+div[role='toolbar'] {
+  background-color: white;
+  padding-left: 0;
+  padding-right: 0;
 }
