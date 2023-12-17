@@ -57,7 +57,10 @@ const Calendar: React.FC<CalendarProps> = ({ month, year }) => {
       </h1>
       <div className="grid grid-cols-7 text-center">
         {['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'].map((wd) => (
-          <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">
+          <h4
+            key={wd}
+            className="scroll-m-20 text-xl font-semibold tracking-tight"
+          >
             {wd}
           </h4>
         ))}
