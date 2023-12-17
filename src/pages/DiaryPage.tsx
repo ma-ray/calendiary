@@ -1,4 +1,5 @@
 import '@mdxeditor/editor/style.css'
+import { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import {
   MDXEditor,
@@ -31,7 +32,7 @@ const DiaryPage = () => {
 `
 
   return (
-    <div className="h-full">
+    <div className="h-screen">
       <div className="flex flex-col gap-3 mx-auto w-1/2 pt-24">
         <div className="flex gap-6 px-3">
           <h1 className="scroll-m-20 text-4xl font-black tracking-tight">
@@ -41,31 +42,32 @@ const DiaryPage = () => {
             today
           </h1>
         </div>
-        <MDXEditor
-          markdown={markdown}
-          className="pb-8"
-          placeholder="write about your day"
-          plugins={[
-            headingsPlugin(),
-            quotePlugin(),
-            listsPlugin(),
-            linkPlugin(),
-            linkDialogPlugin({}),
-            markdownShortcutPlugin(),
-            toolbarPlugin({
-              toolbarContents: () => (
-                <>
-                  <UndoRedo />
-                  <BoldItalicUnderlineToggles />
-                  <BlockTypeSelect />
-                  <CreateLink />
-                  <CodeToggle />
-                </>
-              ),
-            }),
-          ]}
-          contentEditableClassName="prose max-w-none mdx-markdown pl-0"
-        />
+        <div className="pb-8">
+          <MDXEditor
+            markdown={markdown}
+            placeholder="write about your day"
+            plugins={[
+              headingsPlugin(),
+              quotePlugin(),
+              listsPlugin(),
+              linkPlugin(),
+              linkDialogPlugin({}),
+              markdownShortcutPlugin(),
+              toolbarPlugin({
+                toolbarContents: () => (
+                  <>
+                    <UndoRedo />
+                    <BoldItalicUnderlineToggles />
+                    <BlockTypeSelect />
+                    <CreateLink />
+                    <CodeToggle />
+                  </>
+                ),
+              }),
+            ]}
+            contentEditableClassName="prose max-w-none mdx-markdown pl-0"
+          />
+        </div>
       </div>
     </div>
   )
