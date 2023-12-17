@@ -47,7 +47,7 @@ const DiaryPage = () => {
             linkDialogPlugin({}),
             markdownShortcutPlugin(),
           ]}
-          contentEditableClassName="prose"
+          contentEditableClassName="prose mdx-markdown"
         />
       </div>
     </div>

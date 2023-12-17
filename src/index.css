@@ -86,3 +86,8 @@
   font-family: 'Inter';
   src: url('./assets/Inter-Regular.ttf');
 }
+
+.mdx-markdown a {
+  color: #006adc;
+  text-decoration: none;
+}
