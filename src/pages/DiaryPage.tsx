@@ -1,5 +1,4 @@
 import '@mdxeditor/editor/style.css'
-import { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import {
   MDXEditor,
