@@ -13,6 +13,7 @@ import {
   BoldItalicUnderlineToggles,
   BlockTypeSelect,
   CreateLink,
+  CodeToggle,
 } from '@mdxeditor/editor'
 import { months } from '../util/time'
 
@@ -58,6 +59,7 @@ const DiaryPage = () => {
                   <BoldItalicUnderlineToggles />
                   <BlockTypeSelect />
                   <CreateLink />
+                  <CodeToggle />
                 </>
               ),
             }),
