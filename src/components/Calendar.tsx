@@ -16,18 +16,18 @@ const Day: React.FC<DayProps> = ({ date }) => {
     moment().startOf('day')
   )
 
-  const bg = date.siblingMonth
-    ? 'bg-daypassed'
-    : dayPassed
-    ? 'bg-daypassed'
-    : isToday
-    ? 'bg-today'
-    : ''
+  const bg =
+    date.siblingMonth && dayPassed
+      ? 'bg-daypassed'
+      : dayPassed
+      ? 'bg-daypassed'
+      : isToday
+      ? 'bg-today'
+      : ''
 
   return (
     <div
-      className={`flex items-center justify-center border border-black h-24 w-24 col ${bg}
-      }`}
+      className={`flex items-center justify-center border border-black h-24 w-24 col ${bg}`}
     >
       <Link to={`/diary/${date.year}/${date.month}/${date.day}`}>
         <h4 className="scroll-m-20 text-2xl font-bold tracking-tight">
@@ -57,7 +57,10 @@ const Calendar: React.FC<CalendarProps> = ({ month, year }) => {
       </h1>
       <div className="grid grid-cols-7 text-center">
         {['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'].map((wd) => (
-          <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">
+          <h4
+            key={wd}
+            className="scroll-m-20 text-xl font-semibold tracking-tight"
+          >
             {wd}
           </h4>
         ))}
