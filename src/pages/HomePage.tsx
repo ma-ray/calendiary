@@ -57,7 +57,7 @@ const HomePage = () => {
             key={i}
             className="snap-center relative flex justify-center items-center h-full"
           >
-            <Calendar month={i} year={2023} />
+            <Calendar month={i} year={moment().year()} />
           </div>
         ))}
       </div>
