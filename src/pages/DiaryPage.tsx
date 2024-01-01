@@ -1,5 +1,5 @@
 import '@mdxeditor/editor/style.css'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import {
   MDXEditor,
   headingsPlugin,
@@ -32,6 +32,11 @@ const DiaryPage = () => {
 
   return (
     <div className="h-screen">
+      <Link to="/">
+        <button className="hover:bg-slate-100 p-3 fixed left-0 top-0">
+          <p className="font-bold">home</p>
+        </button>
+      </Link>
       <div className="flex flex-col gap-3 mx-auto w-1/2 pt-24">
         <div className="flex gap-6 px-3">
           <h1 className="scroll-m-20 text-4xl font-black tracking-tight">
