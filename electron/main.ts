@@ -1,5 +1,6 @@
-import { app, BrowserWindow } from 'electron'
+import { app, BrowserWindow, ipcMain } from 'electron'
 import path from 'node:path'
+import { readDiary, writeDiary } from './editor'
 
 // The built directory structure
 //
@@ -58,4 +59,9 @@ app.on('activate', () => {
   }
 })
 
-app.whenReady().then(createWindow)
+app.whenReady().then(() => {
+  ipcMain.on('write-diary', writeDiary)
+  ipcMain.handle('read-diary', readDiary)
+
+  createWindow()
+})
