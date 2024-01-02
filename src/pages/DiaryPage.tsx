@@ -33,18 +33,19 @@ const DiaryPage = () => {
   const editorRef = useRef<MDXEditorMethods>(null)
 
   const debouncedWriteToFile = debounce((content) => {
-    window.ipcRenderer.send('write-diary', content)
+    window.ipcRenderer.send('write-diary', year, month, day, content)
   }, 500)
 
   useEffect(() => {
-    window.ipcRenderer
-      .invoke('read-diary')
-      .then((value: string) => setFileContent(value))
-      .catch((error) => {
-        console.error('Error reading diary:', error)
-      })
-      .finally(() => setLoading(false))
-  }, [])
+    if (year && month && day)
+      window.ipcRenderer
+        .invoke('read-diary', year, month, day)
+        .then((value: string) => setFileContent(value))
+        .catch((error) => {
+          console.error('Error reading diary:', error)
+        })
+        .finally(() => setLoading(false))
+  }, [year, month, day])
 
   useEffect(() => {
     editorRef.current?.setMarkdown(fileContent)
