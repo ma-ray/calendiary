@@ -16,7 +16,7 @@ import {
   CodeToggle,
   MDXEditorMethods,
 } from '@mdxeditor/editor'
-import { months } from '../util/time'
+import { dateStatus, months } from '../util/time'
 import { debounce } from 'lodash'
 import { useEffect, useRef, useState } from 'react'
 
@@ -66,7 +66,7 @@ const DiaryPage = () => {
             {`${months[parseInt(month ?? '0')]} ${day}, ${year}`}
           </h1>
           <h1 className="scroll-m-20 text-4xl font-normal tracking-tight text-gray-500">
-            today
+            {day && month && year ? dateStatus(day, month, year) : 'unknown'}
           </h1>
         </div>
         <div className="pb-8">
