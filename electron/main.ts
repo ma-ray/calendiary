@@ -1,5 +1,8 @@
-import { app, BrowserWindow } from 'electron'
+import { app, BrowserWindow, ipcMain } from 'electron'
 import path from 'node:path'
+import { openDirectory, readDiary, writeDiary } from './editor'
+import Store from 'electron-store'
+import { getSettings } from './settings'
 
 // The built directory structure
 //
@@ -18,6 +21,8 @@ process.env.VITE_PUBLIC = app.isPackaged
 let win: BrowserWindow | null
 // 🚧 Use ['ENV_NAME'] avoid vite:define plugin - Vite@2.x
 const VITE_DEV_SERVER_URL = process.env['VITE_DEV_SERVER_URL']
+
+export const store = new Store()
 
 function createWindow() {
   win = new BrowserWindow({
@@ -58,4 +63,11 @@ app.on('activate', () => {
   }
 })
 
-app.whenReady().then(createWindow)
+app.whenReady().then(() => {
+  ipcMain.on('write-diary', writeDiary)
+  ipcMain.handle('read-diary', readDiary)
+  ipcMain.handle('open-directory', openDirectory)
+  ipcMain.handle('get-settings', getSettings)
+
+  createWindow()
+})

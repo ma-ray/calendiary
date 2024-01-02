@@ -1,5 +1,5 @@
 import '@mdxeditor/editor/style.css'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import {
   MDXEditor,
   headingsPlugin,
@@ -14,8 +14,11 @@ import {
   BlockTypeSelect,
   CreateLink,
   CodeToggle,
+  MDXEditorMethods,
 } from '@mdxeditor/editor'
 import { months } from '../util/time'
+import { debounce } from 'lodash'
+import { useEffect, useRef, useState } from 'react'
 
 type ParamsType = {
   year: string
@@ -25,13 +28,38 @@ type ParamsType = {
 
 const DiaryPage = () => {
   const { year, month, day } = useParams<ParamsType>()
+  const [loading, setLoading] = useState(true)
+  const [fileContent, setFileContent] = useState('')
+  const editorRef = useRef<MDXEditorMethods>(null)
 
-  const markdown = `
-  Hello
-`
+  const debouncedWriteToFile = debounce((content) => {
+    window.ipcRenderer.send('write-diary', year, month, day, content)
+  }, 500)
+
+  useEffect(() => {
+    if (year && month && day)
+      window.ipcRenderer
+        .invoke('read-diary', year, month, day)
+        .then((value: string) => setFileContent(value))
+        .catch((error) => {
+          console.error('Error reading diary:', error)
+        })
+        .finally(() => setLoading(false))
+  }, [year, month, day])
+
+  useEffect(() => {
+    editorRef.current?.setMarkdown(fileContent)
+  }, [fileContent])
+
+  if (loading) return <div>loading...</div>
 
   return (
     <div className="h-screen">
+      <Link to="/">
+        <button className="hover:bg-slate-100 p-3 fixed left-0 top-0">
+          <p className="font-bold">home</p>
+        </button>
+      </Link>
       <div className="flex flex-col gap-3 mx-auto w-1/2 pt-24">
         <div className="flex gap-6 px-3">
           <h1 className="scroll-m-20 text-4xl font-black tracking-tight">
@@ -43,7 +71,7 @@ const DiaryPage = () => {
         </div>
         <div className="pb-8">
           <MDXEditor
-            markdown={markdown}
+            markdown=""
             placeholder="write about your day"
             plugins={[
               headingsPlugin(),
@@ -64,6 +92,8 @@ const DiaryPage = () => {
                 ),
               }),
             ]}
+            ref={editorRef}
+            onChange={(e) => debouncedWriteToFile(e)}
             contentEditableClassName="prose max-w-none mdx-markdown pl-0"
           />
         </div>
