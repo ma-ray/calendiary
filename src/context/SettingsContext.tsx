@@ -5,6 +5,7 @@ import { Settings } from '../../shared/settings'
 type SettingsContextType = {
   settings?: Settings
   setSettings: Dispatch<React.SetStateAction<Settings | undefined>>
+  loadSettings: () => Promise<void>
 }
 
 export const SettingsContext = createContext<SettingsContextType | undefined>(
@@ -36,7 +37,7 @@ export const SettingsProvider: React.FC<SettingsProviderProps> = ({
   }
 
   return settings ? (
-    <SettingsContext.Provider value={{ settings, setSettings }}>
+    <SettingsContext.Provider value={{ settings, setSettings, loadSettings }}>
       {children}
     </SettingsContext.Provider>
   ) : (

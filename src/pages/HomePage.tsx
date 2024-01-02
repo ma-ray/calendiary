@@ -1,10 +1,12 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useContext } from 'react'
 import Calendar from '../components/Calendar'
 import { motion, useScroll, useSpring } from 'framer-motion'
 import moment from 'moment'
 import { Settings } from 'lucide-react'
+import { SettingsContext } from '../context/SettingsContext'
 
 const HomePage = () => {
+  const settingsContext = useContext(SettingsContext)
   const calendarListRef = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({
     container: calendarListRef,
@@ -34,6 +36,20 @@ const HomePage = () => {
 
   return (
     <div className="h-screen">
+      <button
+        className="fixed left-0 top-0 hover:bg-slate-100 p-3 z-10"
+        onClick={(e) => {
+          e.preventDefault()
+          window.ipcRenderer.invoke('open-directory').then((res) => {
+            if (res) {
+              settingsContext?.loadSettings()
+            }
+          })
+        }}
+      >
+        <p className="font-bold">change diary</p>
+      </button>
+
       <div className="fixed right-5 top-0 z-10 flex items-center">
         <button className="hover:bg-slate-100 p-3" onClick={jumpToCurrentMonth}>
           <p className="font-bold">jump to today</p>
