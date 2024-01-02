@@ -1,15 +1,9 @@
 import { IpcMainEvent, IpcMainInvokeEvent, dialog } from 'electron'
-import {
-  writeFile,
-  readFileSync,
-  writeFileSync,
-  existsSync,
-  mkdirSync,
-} from 'fs'
 import { store } from './main'
 import { Settings } from '../shared/settings'
 import { getSettings } from './settings'
 import path from 'node:path'
+import { access, mkdir, readFile, writeFile } from 'fs/promises'
 
 export const writeDiary = (
   _: IpcMainEvent,
@@ -19,38 +13,40 @@ export const writeDiary = (
   data: string
 ) => {
   const settings = getSettings()
+  const trueMonth = parseInt(month) + 1
   const diaryDayPath = path.join(
     settings.diaryLocation,
-    `${year}/${month + 1}/${month + 1}-${day}-${year}.md`
+    `${year}/${trueMonth}/${trueMonth}-${day}-${year}.md`
   )
 
-  writeFile(diaryDayPath, data, (err) => {
-    if (err) {
-      console.error('Error writing file:', err)
-    }
-  })
+  return writeFile(diaryDayPath, data)
 }
 
-export const readDiary = (
+export const readDiary = async (
   _: IpcMainInvokeEvent,
   year: string,
   month: string,
   day: string
 ) => {
   const settings = getSettings()
+  const trueMonth = parseInt(month) + 1
   const diaryDayPath = path.join(
     settings.diaryLocation,
-    `${year}/${month + 1}/${month + 1}-${day}-${year}.md`
+    `${year}/${trueMonth}/${trueMonth}-${day}-${year}.md`
   )
 
-  if (!existsSync(diaryDayPath)) {
-    mkdirSync(path.join(settings.diaryLocation, `${year}/${month + 1}`), {
+  try {
+    await access(diaryDayPath)
+  } catch (error) {
+    await mkdir(path.join(settings.diaryLocation, `${year}/${trueMonth}`), {
       recursive: true,
     })
-    writeFileSync(diaryDayPath, '')
+    await writeFile(diaryDayPath, '')
     return ''
   }
-  return readFileSync(diaryDayPath).toString()
+
+  const content = await readFile(diaryDayPath, 'utf-8')
+  return content
 }
 
 export const openDirectory = async () => {
