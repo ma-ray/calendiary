@@ -15,11 +15,6 @@ const HomePage = () => {
     restDelta: 0.001,
   })
 
-  // // window.ipcRenderer.invoke('ping').then(console.log)
-
-  // // sends one way reponse to main process
-  // window.ipcRenderer.send('ping')
-
   const jumpToCurrentMonth = () => {
     const currentMonth = moment().get('month')
     calendarListRef.current?.children[currentMonth].scrollIntoView()

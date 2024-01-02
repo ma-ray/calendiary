@@ -1,24 +1,15 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import './index.css'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import HomePage from './pages/HomePage.tsx'
-import DiaryPage from './pages/DiaryPage.tsx'
+import App from './App.tsx'
 
-const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <HomePage />,
-  },
-  {
-    path: '/diary/:year/:month/:day',
-    element: <DiaryPage />,
-  },
-])
+// window.ipcRenderer
+//   .invoke('get-settings-value', 'diaryLocation')
+//   .then((res) => console.log(res))
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <App />
   </React.StrictMode>
 )
 

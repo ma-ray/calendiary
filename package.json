@@ -19,6 +19,7 @@
     "calendar-base": "^2.0.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
+    "electron-store": "^8.1.0",
     "framer-motion": "^10.16.16",
     "lodash": "^4.17.21",
     "lucide-react": "^0.290.0",
