@@ -6,7 +6,7 @@ import { Settings } from 'lucide-react'
 import { SettingsContext } from '../context/SettingsContext'
 
 const HomePage = () => {
-  const settingsContext = useContext(SettingsContext)
+  const { loadSettings } = useContext(SettingsContext)
   const calendarListRef = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({
     container: calendarListRef,
@@ -42,7 +42,7 @@ const HomePage = () => {
           e.preventDefault()
           window.ipcRenderer.invoke('open-directory').then((res) => {
             if (res) {
-              settingsContext?.loadSettings()
+              loadSettings()
             }
           })
         }}
