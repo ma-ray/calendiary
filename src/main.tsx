@@ -3,10 +3,6 @@ import ReactDOM from 'react-dom/client'
 import './index.css'
 import App from './App.tsx'
 
-// window.ipcRenderer
-//   .invoke('get-settings-value', 'diaryLocation')
-//   .then((res) => console.log(res))
-
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <App />
