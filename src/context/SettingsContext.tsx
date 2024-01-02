@@ -1,16 +1,17 @@
-import { Dispatch, ReactNode, createContext, useEffect, useState } from 'react'
+import { ReactNode, createContext, useEffect, useState } from 'react'
 import SetupPage from '../pages/SetupPage'
 import { Settings } from '../../shared/settings'
 
 type SettingsContextType = {
   settings?: Settings
-  setSettings: Dispatch<React.SetStateAction<Settings | undefined>>
+  setSettings: (value: Settings) => void
   loadSettings: () => Promise<void>
 }
 
-export const SettingsContext = createContext<SettingsContextType | undefined>(
-  undefined
-)
+export const SettingsContext = createContext<SettingsContextType>({
+  setSettings: () => {},
+  loadSettings: () => Promise.reject(),
+})
 
 type SettingsProviderProps = {
   children: ReactNode
