@@ -58,7 +58,7 @@ const DiaryPage = () => {
       window.ipcRenderer
         .invoke('does-diary-exist', year, month, day)
         .then((diaryExists) => {
-          if (isToday || diaryExists) {
+          if (isToday || (diaryExists && !dayIsFuture)) {
             window.ipcRenderer
               .invoke('read-diary', year, month, day)
               .then((value: string) => setFileContent(value))
@@ -72,7 +72,7 @@ const DiaryPage = () => {
           setLoading(false)
         })
     }
-  }, [year, month, day])
+  }, [year, month, day, dayIsFuture])
 
   useEffect(() => {
     editorRef.current?.setMarkdown(fileContent)
