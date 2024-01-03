@@ -19,6 +19,7 @@ import {
 import { dateStatus, months } from '../util/time'
 import { debounce } from 'lodash'
 import { useEffect, useRef, useState } from 'react'
+import moment from 'moment'
 
 type ParamsType = {
   year: string
@@ -36,8 +37,16 @@ const DiaryPage = () => {
     window.ipcRenderer.send('write-diary', year, month, day, content)
   }, 500)
 
+  const dayNotOccured = moment().isBefore(
+    moment([
+      parseInt(year ?? '2024'),
+      parseInt(month ?? '0'),
+      parseInt(day ?? '1'),
+    ])
+  )
+
   useEffect(() => {
-    if (year && month && day)
+    if (year && month && day && !dayNotOccured)
       window.ipcRenderer
         .invoke('read-diary', year, month, day)
         .then((value: string) => setFileContent(value))
@@ -45,7 +54,8 @@ const DiaryPage = () => {
           console.error('Error reading diary:', error)
         })
         .finally(() => setLoading(false))
-  }, [year, month, day])
+    else if (dayNotOccured) setLoading(false)
+  }, [year, month, day, dayNotOccured])
 
   useEffect(() => {
     editorRef.current?.setMarkdown(fileContent)
@@ -69,34 +79,45 @@ const DiaryPage = () => {
             {day && month && year ? dateStatus(day, month, year) : 'unknown'}
           </h1>
         </div>
-        <div className="pb-8">
-          <MDXEditor
-            markdown=""
-            placeholder="write about your day"
-            plugins={[
-              headingsPlugin(),
-              quotePlugin(),
-              listsPlugin(),
-              linkPlugin(),
-              linkDialogPlugin({}),
-              markdownShortcutPlugin(),
-              toolbarPlugin({
-                toolbarContents: () => (
-                  <>
-                    <UndoRedo />
-                    <BoldItalicUnderlineToggles />
-                    <BlockTypeSelect />
-                    <CreateLink />
-                    <CodeToggle />
-                  </>
-                ),
-              }),
-            ]}
-            ref={editorRef}
-            onChange={(e) => debouncedWriteToFile(e)}
-            contentEditableClassName="prose max-w-none mdx-markdown pl-0"
-          />
-        </div>
+        {dayNotOccured ? (
+          <div className="py-20 flex flex-col items-center justify-center text-center">
+            <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
+              the day has not come yet.
+            </h3>
+            <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
+              come back later and write about your day!
+            </h3>
+          </div>
+        ) : (
+          <div className="pb-8">
+            <MDXEditor
+              markdown=""
+              placeholder="write about your day"
+              plugins={[
+                headingsPlugin(),
+                quotePlugin(),
+                listsPlugin(),
+                linkPlugin(),
+                linkDialogPlugin({}),
+                markdownShortcutPlugin(),
+                toolbarPlugin({
+                  toolbarContents: () => (
+                    <>
+                      <UndoRedo />
+                      <BoldItalicUnderlineToggles />
+                      <BlockTypeSelect />
+                      <CreateLink />
+                      <CodeToggle />
+                    </>
+                  ),
+                }),
+              ]}
+              ref={editorRef}
+              onChange={(e) => debouncedWriteToFile(e)}
+              contentEditableClassName="prose max-w-none mdx-markdown pl-0"
+            />
+          </div>
+        )}
       </div>
     </div>
   )
