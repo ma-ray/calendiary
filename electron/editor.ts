@@ -49,6 +49,26 @@ export const readDiary = async (
   return content
 }
 
+export const doesDiaryDayExist = async (
+  _: IpcMainInvokeEvent,
+  year: string,
+  month: string,
+  day: string
+) => {
+  const settings = getSettings()
+  const trueMonth = parseInt(month) + 1
+  const diaryDayPath = path.join(
+    settings.diaryLocation,
+    `${year}/${trueMonth}/${trueMonth}-${day}-${year}.md`
+  )
+  try {
+    await access(diaryDayPath)
+    return true
+  } catch (error) {
+    return false
+  }
+}
+
 export const openDirectory = async () => {
   const { canceled, filePaths } = await dialog.showOpenDialog({
     properties: ['openDirectory', 'createDirectory'],
