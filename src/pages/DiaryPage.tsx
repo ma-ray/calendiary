@@ -34,6 +34,7 @@ type ParamsType = {
 
 const DiaryPage = () => {
   const { year, month, day } = useParams<ParamsType>()
+  const [canEdit, setCanEdit] = useState(false)
   const [loading, setLoading] = useState(true)
   const [fileContent, setFileContent] = useState('')
   const editorRef = useRef<MDXEditorMethods>(null)
@@ -42,7 +43,7 @@ const DiaryPage = () => {
     window.ipcRenderer.send('write-diary', year, month, day, content)
   }, 500)
 
-  const dayNotOccured = moment().isBefore(
+  const dayIsFuture = moment().isBefore(
     moment([
       parseInt(year ?? '2024'),
       parseInt(month ?? '0'),
@@ -51,16 +52,27 @@ const DiaryPage = () => {
   )
 
   useEffect(() => {
-    if (year && month && day && !dayNotOccured)
+    if (year && month && day) {
+      const isToday = moment([year, month, day]).isSame(moment().startOf('day'))
+
       window.ipcRenderer
-        .invoke('read-diary', year, month, day)
-        .then((value: string) => setFileContent(value))
-        .catch((error) => {
-          console.error('Error reading diary:', error)
+        .invoke('does-diary-exist', year, month, day)
+        .then((diaryExists) => {
+          if (isToday || diaryExists) {
+            window.ipcRenderer
+              .invoke('read-diary', year, month, day)
+              .then((value: string) => setFileContent(value))
+              .then(() => setCanEdit(true))
+              .catch((error) => {
+                console.error('Error reading diary:', error)
+              })
+          } else {
+            setCanEdit(false)
+          }
+          setLoading(false)
         })
-        .finally(() => setLoading(false))
-    else if (dayNotOccured) setLoading(false)
-  }, [year, month, day, dayNotOccured])
+    }
+  }, [year, month, day])
 
   useEffect(() => {
     editorRef.current?.setMarkdown(fileContent)
@@ -96,14 +108,22 @@ const DiaryPage = () => {
             {day && month && year ? dateStatus(day, month, year) : 'unknown'}
           </h1>
         </div>
-        {dayNotOccured ? (
+        {!canEdit ? (
           <div className="py-20 flex flex-col items-center justify-center text-center">
-            <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
-              the day has not come yet.
-            </h3>
-            <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
-              come back later and write about your day!
-            </h3>
+            {dayIsFuture ? (
+              <>
+                <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
+                  the day has not come yet.
+                </h3>
+                <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
+                  come back later and write about your day!
+                </h3>
+              </>
+            ) : (
+              <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
+                nothing was recorded on this day
+              </h3>
+            )}
           </div>
         ) : (
           <div className="pb-8">
