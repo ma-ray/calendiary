@@ -16,7 +16,12 @@ import {
   CodeToggle,
   MDXEditorMethods,
 } from '@mdxeditor/editor'
-import { dateStatus, months } from '../util/time'
+import {
+  dateStatus,
+  getNextDayLink,
+  getPreviousDayLink,
+  months,
+} from '../util/time'
 import { debounce } from 'lodash'
 import { useEffect, useRef, useState } from 'react'
 import moment from 'moment'
@@ -70,6 +75,18 @@ const DiaryPage = () => {
           <p className="font-bold">home</p>
         </button>
       </Link>
+      <div className="fixed top-0 right-0">
+        <Link to={getPreviousDayLink(day ?? '1', month ?? '0', year ?? '2024')}>
+          <button className="hover:bg-slate-100 p-3">
+            <p className="font-bold">previous day</p>
+          </button>
+        </Link>
+        <Link to={getNextDayLink(day ?? '1', month ?? '0', year ?? '2024')}>
+          <button className="hover:bg-slate-100 p-3">
+            <p className="font-bold">next day</p>
+          </button>
+        </Link>
+      </div>
       <div className="flex flex-col gap-3 mx-auto w-1/2 pt-24">
         <div className="flex gap-6 px-3">
           <h1 className="scroll-m-20 text-4xl font-black tracking-tight">

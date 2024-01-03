@@ -37,3 +37,29 @@ export const dateStatus = (day: string, month: string, year: string) => {
     return 'many days ago'
   }
 }
+
+export const getNextDayLink = (day: string, month: string, year: string) => {
+  const currentDate = moment([
+    parseInt(year),
+    parseInt(month),
+    parseInt(day),
+  ]).add(1, 'd')
+  return `/diary/${currentDate.get('year')}/${currentDate.get(
+    'month'
+  )}/${currentDate.get('date')}`
+}
+
+export const getPreviousDayLink = (
+  day: string,
+  month: string,
+  year: string
+) => {
+  const currentDate = moment([
+    parseInt(year),
+    parseInt(month),
+    parseInt(day),
+  ]).subtract(1, 'd')
+  return `/diary/${currentDate.get('year')}/${currentDate.get(
+    'month'
+  )}/${currentDate.get('date')}`
+}
