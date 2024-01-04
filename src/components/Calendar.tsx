@@ -1,7 +1,7 @@
 import { Calendar as CalendarBase, CalendarDate } from 'calendar-base'
 import moment from 'moment'
 import { Link } from 'react-router-dom'
-import { months } from '../util/time'
+import { months } from '../util/date'
 
 type DayProps = {
   date: CalendarDate
