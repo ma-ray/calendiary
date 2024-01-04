@@ -1,5 +1,5 @@
 import '@mdxeditor/editor/style.css'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import {
   MDXEditor,
   headingsPlugin,
@@ -20,8 +20,9 @@ import {
   dateStatus,
   getNextDayLink,
   getPreviousDayLink,
+  isDateValid,
   months,
-} from '../util/time'
+} from '../util/date'
 import { debounce } from 'lodash'
 import { useEffect, useRef, useState } from 'react'
 import moment from 'moment'
@@ -34,6 +35,7 @@ type ParamsType = {
 
 const DiaryPage = () => {
   const { year, month, day } = useParams<ParamsType>()
+  const navigate = useNavigate()
   const [canEdit, setCanEdit] = useState(false)
   const [loading, setLoading] = useState(true)
   const [fileContent, setFileContent] = useState('')
@@ -50,6 +52,13 @@ const DiaryPage = () => {
       parseInt(day ?? '1'),
     ])
   )
+
+  useEffect(() => {
+    if (!isDateValid(day, month, year)) {
+      console.log('not valid')
+      navigate('/')
+    }
+  }, [day, month, year, navigate])
 
   useEffect(() => {
     if (year && month && day) {

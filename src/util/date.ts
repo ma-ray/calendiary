@@ -63,3 +63,13 @@ export const getPreviousDayLink = (
     'month'
   )}/${currentDate.get('date')}`
 }
+
+export const isDateValid = (day?: string, month?: string, year?: string) =>
+  !isNaN(Number(year)) &&
+  !isNaN(Number(month)) &&
+  !isNaN(Number(day)) &&
+  moment([
+    parseInt(year ?? ''),
+    parseInt(month ?? ''),
+    parseInt(day ?? ''),
+  ]).isValid()
