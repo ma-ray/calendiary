@@ -55,7 +55,6 @@ const DiaryPage = () => {
 
   useEffect(() => {
     if (!isDateValid(day, month, year)) {
-      console.log('not valid')
       navigate('/')
     }
   }, [day, month, year, navigate])
