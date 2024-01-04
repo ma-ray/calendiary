@@ -26,6 +26,7 @@ import {
 import { debounce } from 'lodash'
 import { useEffect, useRef, useState } from 'react'
 import moment from 'moment'
+import { FlatButton } from '../components/FlatButton'
 
 type ParamsType = {
   year: string
@@ -91,20 +92,14 @@ const DiaryPage = () => {
   return (
     <div className="h-screen">
       <Link to="/">
-        <button className="hover:bg-slate-100 p-3 fixed left-0 top-0">
-          <p className="font-bold">home</p>
-        </button>
+        <FlatButton className="fixed left-0 top-0" label="home" />
       </Link>
       <div className="fixed top-0 right-0">
         <Link to={getPreviousDayLink(day ?? '1', month ?? '0', year ?? '2024')}>
-          <button className="hover:bg-slate-100 p-3">
-            <p className="font-bold">previous day</p>
-          </button>
+          <FlatButton className="" label="previous day" />
         </Link>
         <Link to={getNextDayLink(day ?? '1', month ?? '0', year ?? '2024')}>
-          <button className="hover:bg-slate-100 p-3">
-            <p className="font-bold">next day</p>
-          </button>
+          <FlatButton className="" label="next day" />
         </Link>
       </div>
       <div className="flex flex-col gap-3 mx-auto w-1/2 pt-24">
