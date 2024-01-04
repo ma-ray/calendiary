@@ -2,8 +2,8 @@ import { useEffect, useRef, useContext } from 'react'
 import Calendar from '../components/Calendar'
 import { motion, useScroll, useSpring } from 'framer-motion'
 import moment from 'moment'
-import { Settings } from 'lucide-react'
 import { SettingsContext } from '../context/SettingsContext'
+import { FlatButton } from '../components/FlatButton'
 
 const HomePage = () => {
   const { loadSettings } = useContext(SettingsContext)
@@ -36,8 +36,9 @@ const HomePage = () => {
 
   return (
     <div className="h-screen">
-      <button
-        className="fixed left-0 top-0 hover:bg-slate-100 p-3 z-10"
+      <FlatButton
+        label="change diary"
+        className="fixed left-0 top-0 z-10"
         onClick={(e) => {
           e.preventDefault()
           window.ipcRenderer.invoke('open-directory').then((res) => {
@@ -46,17 +47,10 @@ const HomePage = () => {
             }
           })
         }}
-      >
-        <p className="font-bold">change diary</p>
-      </button>
+      />
 
-      <div className="fixed right-5 top-0 z-10 flex items-center">
-        <button className="hover:bg-slate-100 p-3" onClick={jumpToCurrentMonth}>
-          <p className="font-bold">jump to today</p>
-        </button>
-        <button className="hover:bg-slate-100 p-3">
-          <Settings className="" size={'1.5em'} />
-        </button>
+      <div className="fixed right-4 top-0 z-10 flex items-center">
+        <FlatButton label="jump to today" onClick={jumpToCurrentMonth} />
       </div>
       <div
         ref={calendarListRef}
