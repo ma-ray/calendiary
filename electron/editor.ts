@@ -3,7 +3,8 @@ import { store } from './main'
 import { Settings } from '../shared/settings'
 import { getSettings } from './settings'
 import path from 'node:path'
-import { access, mkdir, readFile, writeFile } from 'fs/promises'
+import { access, mkdir, readFile, writeFile, readdir } from 'fs/promises'
+import moment from 'moment'
 
 export const writeDiary = (
   _: IpcMainEvent,
@@ -64,12 +65,7 @@ export const doesDiaryDayExist = async (
     settings.diaryLocation,
     `${year}/${trueMonth}/${day}/${trueMonth}-${day}-${year}.md`
   )
-  try {
-    await access(diaryDayPath)
-    return true
-  } catch (error) {
-    return false
-  }
+  return await doesFileExist(diaryDayPath)
 }
 
 export const openDirectory = async () => {
@@ -87,4 +83,55 @@ export const openDirectory = async () => {
     return true
   }
   return false
+}
+
+const doesFileExist = async (path: string) => {
+  try {
+    await access(path)
+    return true
+  } catch (error) {
+    return false
+  }
+}
+
+export const availableEntries = async (_: IpcMainInvokeEvent, year: number) => {
+  const diaryPath = getSettings().diaryLocation
+  const availableEntries = new Set<string>()
+
+  if (!(await doesFileExist(path.join(diaryPath, `${year}`)))) {
+    return availableEntries
+  }
+
+  const months = (await readdir(path.join(diaryPath, `${year}`))).filter(
+    (month) => {
+      return parseInt(month) < 13 && parseInt(month) > 0
+    }
+  )
+
+  await Promise.all(
+    months.map(async (month) => {
+      const days = (
+        await readdir(path.join(diaryPath, `${year}/${month}`))
+      ).filter((d) => {
+        const daysInMonth = moment([year, parseInt(month) - 1]).daysInMonth()
+        const day = parseInt(d)
+        return day > 0 && day <= daysInMonth
+      })
+
+      await Promise.all(
+        days.map(async (day) => {
+          const diaryDayPath = path.join(
+            diaryPath,
+            `${year}/${month}/${day}/${month}-${day}-${year}.md`
+          )
+
+          if (await doesFileExist(diaryDayPath)) {
+            availableEntries.add(`${month}-${day}-${year}`)
+          }
+        })
+      )
+    })
+  )
+
+  return availableEntries
 }
