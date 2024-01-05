@@ -1,4 +1,4 @@
-import { useEffect, useRef, useContext } from 'react'
+import { useEffect, useRef, useContext, useState } from 'react'
 import Calendar from '../components/Calendar'
 import { motion, useScroll, useSpring } from 'framer-motion'
 import moment from 'moment'
@@ -7,6 +7,7 @@ import { FlatButton } from '../components/FlatButton'
 
 const HomePage = () => {
   const { loadSettings } = useContext(SettingsContext)
+  const [year, setYear] = useState(moment().year())
   const calendarListRef = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({
     container: calendarListRef,
@@ -36,21 +37,45 @@ const HomePage = () => {
 
   return (
     <div className="h-screen">
-      <FlatButton
-        label="change diary"
-        className="fixed left-0 top-0 z-10"
-        onClick={(e) => {
-          e.preventDefault()
-          window.ipcRenderer.invoke('open-directory').then((res) => {
-            if (res) {
-              loadSettings()
-            }
-          })
-        }}
-      />
+      <div className="fixed left-0 top-0 z-10">
+        <FlatButton
+          label="previous year"
+          onClick={(e) => {
+            e.preventDefault()
+            setYear(year - 1)
+          }}
+          disabled={year < 1}
+        />
 
-      <div className="fixed right-4 top-0 z-10 flex items-center">
-        <FlatButton label="jump to today" onClick={jumpToCurrentMonth} />
+        <FlatButton
+          label="next year"
+          onClick={(e) => {
+            e.preventDefault()
+            setYear(year + 1)
+          }}
+        />
+      </div>
+
+      <div className="fixed right-4 top-0 z-10">
+        <FlatButton
+          label="jump to today"
+          onClick={(e) => {
+            e.preventDefault()
+            setYear(moment().year())
+            jumpToCurrentMonth()
+          }}
+        />
+        <FlatButton
+          label="change diary"
+          onClick={(e) => {
+            e.preventDefault()
+            window.ipcRenderer.invoke('open-directory').then((res) => {
+              if (res) {
+                loadSettings()
+              }
+            })
+          }}
+        />
       </div>
       <div
         ref={calendarListRef}
@@ -67,7 +92,7 @@ const HomePage = () => {
             key={i}
             className="snap-center relative flex justify-center items-center h-full"
           >
-            <Calendar month={i} year={moment().year()} />
+            <Calendar month={i} year={year} />
           </div>
         ))}
       </div>
