@@ -16,7 +16,7 @@ export const writeDiary = (
   const trueMonth = parseInt(month) + 1
   const diaryDayPath = path.join(
     settings.diaryLocation,
-    `${year}/${trueMonth}/${trueMonth}-${day}-${year}.md`
+    `${year}/${trueMonth}/${day}/${trueMonth}-${day}-${year}.md`
   )
 
   return writeFile(diaryDayPath, data)
@@ -32,15 +32,18 @@ export const readDiary = async (
   const trueMonth = parseInt(month) + 1
   const diaryDayPath = path.join(
     settings.diaryLocation,
-    `${year}/${trueMonth}/${trueMonth}-${day}-${year}.md`
+    `${year}/${trueMonth}/${day}/${trueMonth}-${day}-${year}.md`
   )
 
   try {
     await access(diaryDayPath)
   } catch (error) {
-    await mkdir(path.join(settings.diaryLocation, `${year}/${trueMonth}`), {
-      recursive: true,
-    })
+    await mkdir(
+      path.join(settings.diaryLocation, `${year}/${trueMonth}/${day}`),
+      {
+        recursive: true,
+      }
+    )
     await writeFile(diaryDayPath, '')
     return ''
   }
@@ -59,7 +62,7 @@ export const doesDiaryDayExist = async (
   const trueMonth = parseInt(month) + 1
   const diaryDayPath = path.join(
     settings.diaryLocation,
-    `${year}/${trueMonth}/${trueMonth}-${day}-${year}.md`
+    `${year}/${trueMonth}/${day}/${trueMonth}-${day}-${year}.md`
   )
   try {
     await access(diaryDayPath)
