@@ -6,8 +6,14 @@ import { SettingsContext } from '../context/SettingsContext'
 import { FlatButton } from '../components/FlatButton'
 
 const HomePage = () => {
+  const savedYearString = sessionStorage.getItem('currentYear')
+  const savedYear =
+    savedYearString && !isNaN(Number(savedYearString))
+      ? savedYearString
+      : moment().year().toString()
+  const [year, setYear] = useState(parseInt(savedYear))
+
   const { loadSettings } = useContext(SettingsContext)
-  const [year, setYear] = useState(moment().year())
   const calendarListRef = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({
     container: calendarListRef,
@@ -42,6 +48,7 @@ const HomePage = () => {
           label="previous year"
           onClick={(e) => {
             e.preventDefault()
+            sessionStorage.setItem('currentYear', (year - 1).toString())
             setYear(year - 1)
           }}
           disabled={year < 1}
@@ -51,6 +58,7 @@ const HomePage = () => {
           label="next year"
           onClick={(e) => {
             e.preventDefault()
+            sessionStorage.setItem('currentYear', (year + 1).toString())
             setYear(year + 1)
           }}
         />
@@ -61,6 +69,7 @@ const HomePage = () => {
           label="jump to today"
           onClick={(e) => {
             e.preventDefault()
+            sessionStorage.setItem('currentYear', moment().year().toString())
             setYear(moment().year())
             jumpToCurrentMonth()
           }}
