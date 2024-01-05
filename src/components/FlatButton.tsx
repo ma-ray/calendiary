@@ -7,13 +7,14 @@ type FlatButtonProps = {
 export const FlatButton: React.FC<FlatButtonProps> = ({
   label,
   className,
+  disabled,
   ...props
 }) => {
   const combinedClassName = `${className || ''} p-3 hover:bg-slate-100`
 
   return (
-    <button className={combinedClassName} {...props}>
-      <p className="font-bold">{label}</p>
+    <button className={combinedClassName} disabled={disabled} {...props}>
+      <p className={`${disabled ? 'text-gray-400' : ''} font-bold`}>{label}</p>
     </button>
   )
 }
