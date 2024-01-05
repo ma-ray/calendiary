@@ -52,6 +52,7 @@ module.exports = {
         },
         daypassed: '#D8D1D1',
         today: '#A9E0F1',
+        available: '#8AF4BB',
       },
       borderRadius: {
         lg: 'var(--radius)',

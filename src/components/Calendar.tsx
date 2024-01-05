@@ -5,9 +5,10 @@ import { months } from '../util/date'
 
 type DayProps = {
   date: CalendarDate
+  entryAvailable?: boolean
 }
 
-const Day: React.FC<DayProps> = ({ date }) => {
+const Day: React.FC<DayProps> = ({ date, entryAvailable }) => {
   const dayPassed = moment([date.year, date.month, date.day]).isBefore(
     moment().startOf('day')
   )
@@ -16,14 +17,15 @@ const Day: React.FC<DayProps> = ({ date }) => {
     moment().startOf('day')
   )
 
-  const bg =
-    date.siblingMonth && dayPassed
-      ? 'bg-daypassed'
-      : dayPassed
-      ? 'bg-daypassed'
-      : isToday
-      ? 'bg-today'
-      : ''
+  const bg = entryAvailable
+    ? 'bg-available'
+    : date.siblingMonth && dayPassed
+    ? 'bg-daypassed'
+    : dayPassed
+    ? 'bg-daypassed'
+    : isToday
+    ? 'bg-today'
+    : ''
 
   return (
     <div
@@ -41,9 +43,14 @@ const Day: React.FC<DayProps> = ({ date }) => {
 type CalendarProps = {
   month: number
   year: number
+  availableEntries: Set<string>
 }
 
-const Calendar: React.FC<CalendarProps> = ({ month, year }) => {
+const Calendar: React.FC<CalendarProps> = ({
+  month,
+  year,
+  availableEntries,
+}) => {
   const calendar = new CalendarBase({
     siblingMonths: true,
   })
@@ -68,7 +75,20 @@ const Calendar: React.FC<CalendarProps> = ({ month, year }) => {
       <div className={`border border-black grid grid-cols-7`}>
         {days.map(
           (date) =>
-            date && <Day key={`${date.day}-${date.month}`} date={date} />
+            date && (
+              <Day
+                key={`${date.day}-${date.month}`}
+                date={date}
+                entryAvailable={
+                  availableEntries.has(
+                    `${date.month + 1}-${date.day}-${date.year}`
+                  ) &&
+                  moment([date.year, date.month, date.day]).isBefore(
+                    moment().startOf('day')
+                  )
+                }
+              />
+            )
         )}
       </div>
     </div>
