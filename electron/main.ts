@@ -1,6 +1,7 @@
 import { app, BrowserWindow, ipcMain, shell } from 'electron'
 import path from 'node:path'
 import {
+  availableEntries,
   doesDiaryDayExist,
   openDirectory,
   readDiary,
@@ -79,6 +80,7 @@ app.whenReady().then(() => {
   ipcMain.handle('open-directory', openDirectory)
   ipcMain.handle('get-settings', getSettings)
   ipcMain.handle('does-diary-exist', doesDiaryDayExist)
+  ipcMain.handle('available-entries', availableEntries)
 
   createWindow()
 })

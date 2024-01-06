@@ -13,6 +13,9 @@ const HomePage = () => {
       : moment().year().toString()
   const [year, setYear] = useState(parseInt(savedYear))
 
+  const [availableEntries, setAvailableEntries] = useState<Set<string>>(
+    new Set()
+  )
   const { loadSettings } = useContext(SettingsContext)
   const calendarListRef = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({
@@ -40,6 +43,12 @@ const HomePage = () => {
       }
     }
   }, [])
+
+  useEffect(() => {
+    window.ipcRenderer.invoke('available-entries', year).then((res) => {
+      setAvailableEntries(res)
+    })
+  }, [year])
 
   return (
     <div className="h-screen">
@@ -80,7 +89,13 @@ const HomePage = () => {
             e.preventDefault()
             window.ipcRenderer.invoke('open-directory').then((res) => {
               if (res) {
-                loadSettings()
+                loadSettings().then(() =>
+                  window.ipcRenderer
+                    .invoke('available-entries', year)
+                    .then((res) => {
+                      setAvailableEntries(res)
+                    })
+                )
               }
             })
           }}
@@ -101,7 +116,11 @@ const HomePage = () => {
             key={i}
             className="snap-center relative flex justify-center items-center h-full"
           >
-            <Calendar month={i} year={year} />
+            <Calendar
+              month={i}
+              year={year}
+              availableEntries={availableEntries}
+            />
           </div>
         ))}
       </div>
