@@ -100,6 +100,13 @@ const HomePage = () => {
             })
           }}
         />
+        <FlatButton
+          label="show diary location"
+          onClick={(e) => {
+            e.preventDefault()
+            window.ipcRenderer.send('show-diary-in-explorer')
+          }}
+        />
       </div>
       <div
         ref={calendarListRef}
