@@ -89,7 +89,13 @@ const HomePage = () => {
             e.preventDefault()
             window.ipcRenderer.invoke('open-directory').then((res) => {
               if (res) {
-                loadSettings()
+                loadSettings().then(() =>
+                  window.ipcRenderer
+                    .invoke('available-entries', year)
+                    .then((res) => {
+                      setAvailableEntries(res)
+                    })
+                )
               }
             })
           }}
