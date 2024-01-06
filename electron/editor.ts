@@ -1,4 +1,4 @@
-import { IpcMainEvent, IpcMainInvokeEvent, dialog } from 'electron'
+import { IpcMainEvent, IpcMainInvokeEvent, dialog, shell } from 'electron'
 import { store } from './main'
 import { Settings } from '../shared/settings'
 import { getSettings } from './settings'
@@ -134,4 +134,26 @@ export const availableEntries = async (_: IpcMainInvokeEvent, year: number) => {
   )
 
   return availableEntries
+}
+
+export const showDiaryInExplorer = () => {
+  const diaryPath = getSettings().diaryLocation
+  shell.openPath(diaryPath)
+}
+
+export const showDiaryPageInExplorer = async (
+  _: IpcMainEvent,
+  year: string,
+  month: string,
+  day: string
+) => {
+  const diaryPath = getSettings().diaryLocation
+  const trueMonth = parseInt(month) + 1
+  const diaryDayPath = path.join(
+    diaryPath,
+    `${year}/${trueMonth}/${day}/${trueMonth}-${day}-${year}.md`
+  )
+  if (await doesFileExist(diaryDayPath)) {
+    shell.showItemInFolder(diaryDayPath)
+  }
 }

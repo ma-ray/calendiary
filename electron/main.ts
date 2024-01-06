@@ -5,6 +5,8 @@ import {
   doesDiaryDayExist,
   openDirectory,
   readDiary,
+  showDiaryInExplorer,
+  showDiaryPageInExplorer,
   writeDiary,
 } from './editor'
 import Store from 'electron-store'
@@ -81,6 +83,8 @@ app.whenReady().then(() => {
   ipcMain.handle('get-settings', getSettings)
   ipcMain.handle('does-diary-exist', doesDiaryDayExist)
   ipcMain.handle('available-entries', availableEntries)
+  ipcMain.on('show-diary-in-explorer', showDiaryInExplorer)
+  ipcMain.on('show-diary-page-in-explorer', showDiaryPageInExplorer)
 
   createWindow()
 })
