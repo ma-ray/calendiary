@@ -140,3 +140,20 @@ export const showDiaryInExplorer = () => {
   const diaryPath = getSettings().diaryLocation
   shell.openPath(diaryPath)
 }
+
+export const showDiaryPageInExplorer = async (
+  _: IpcMainEvent,
+  year: string,
+  month: string,
+  day: string
+) => {
+  const diaryPath = getSettings().diaryLocation
+  const trueMonth = parseInt(month) + 1
+  const diaryDayPath = path.join(
+    diaryPath,
+    `${year}/${trueMonth}/${day}/${trueMonth}-${day}-${year}.md`
+  )
+  if (await doesFileExist(diaryDayPath)) {
+    shell.showItemInFolder(diaryDayPath)
+  }
+}

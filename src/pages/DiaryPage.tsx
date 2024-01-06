@@ -95,11 +95,25 @@ const DiaryPage = () => {
         <FlatButton className="fixed left-0 top-0" label="home" />
       </Link>
       <div className="fixed top-0 right-0">
+        {canEdit && (
+          <FlatButton
+            label="open file location"
+            onClick={(e) => {
+              e.preventDefault()
+              window.ipcRenderer.send(
+                'show-diary-page-in-explorer',
+                year,
+                month,
+                day
+              )
+            }}
+          />
+        )}
         <Link to={getPreviousDayLink(day ?? '1', month ?? '0', year ?? '2024')}>
-          <FlatButton className="" label="previous day" />
+          <FlatButton label="previous day" />
         </Link>
         <Link to={getNextDayLink(day ?? '1', month ?? '0', year ?? '2024')}>
-          <FlatButton className="" label="next day" />
+          <FlatButton label="next day" />
         </Link>
       </div>
       <div className="flex flex-col gap-3 mx-auto w-1/2 pt-24">
