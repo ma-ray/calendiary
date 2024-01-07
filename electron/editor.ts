@@ -8,13 +8,13 @@ import moment from 'moment'
 
 export const writeDiary = (
   _: IpcMainEvent,
-  year: string,
-  month: string,
-  day: string,
+  year: number,
+  month: number,
+  day: number,
   data: string
 ) => {
   const settings = getSettings()
-  const trueMonth = parseInt(month) + 1
+  const trueMonth = month + 1
   const diaryDayPath = path.join(
     settings.diaryLocation,
     `${year}/${trueMonth}/${day}/${trueMonth}-${day}-${year}.md`
@@ -25,12 +25,12 @@ export const writeDiary = (
 
 export const readDiary = async (
   _: IpcMainInvokeEvent,
-  year: string,
-  month: string,
-  day: string
+  year: number,
+  month: number,
+  day: number
 ) => {
   const settings = getSettings()
-  const trueMonth = parseInt(month) + 1
+  const trueMonth = month + 1
   const diaryDayPath = path.join(
     settings.diaryLocation,
     `${year}/${trueMonth}/${day}/${trueMonth}-${day}-${year}.md`
@@ -55,12 +55,12 @@ export const readDiary = async (
 
 export const doesDiaryDayExist = async (
   _: IpcMainInvokeEvent,
-  year: string,
-  month: string,
-  day: string
+  year: number,
+  month: number,
+  day: number
 ) => {
   const settings = getSettings()
-  const trueMonth = parseInt(month) + 1
+  const trueMonth = month + 1
   const diaryDayPath = path.join(
     settings.diaryLocation,
     `${year}/${trueMonth}/${day}/${trueMonth}-${day}-${year}.md`
@@ -143,12 +143,12 @@ export const showDiaryInExplorer = () => {
 
 export const showDiaryPageInExplorer = async (
   _: IpcMainEvent,
-  year: string,
-  month: string,
-  day: string
+  year: number,
+  month: number,
+  day: number
 ) => {
   const diaryPath = getSettings().diaryLocation
-  const trueMonth = parseInt(month) + 1
+  const trueMonth = month + 1
   const diaryDayPath = path.join(
     diaryPath,
     `${year}/${trueMonth}/${day}/${trueMonth}-${day}-${year}.md`
