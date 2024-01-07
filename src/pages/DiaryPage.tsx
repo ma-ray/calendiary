@@ -53,12 +53,12 @@ const DiaryPage = () => {
 
   const dayIsFuture = moment().isBefore(moment([yearNum, monthNum, dayNum]))
 
+  const isToday = moment([yearNum, monthNum, dayNum]).isSame(
+    moment().startOf('day')
+  )
+
   useEffect(() => {
     if (isDateValid(yearNum, monthNum, dayNum)) {
-      const isToday = moment([yearNum, monthNum, dayNum]).isSame(
-        moment().startOf('day')
-      )
-
       window.ipcRenderer
         .invoke('does-diary-exist', yearNum, monthNum, dayNum)
         .then((diaryExists) => {
@@ -78,7 +78,7 @@ const DiaryPage = () => {
     } else {
       navigate('/')
     }
-  }, [dayIsFuture, yearNum, monthNum, dayNum, navigate])
+  }, [dayIsFuture, yearNum, monthNum, dayNum, navigate, isToday])
 
   useEffect(() => {
     editorRef.current?.setMarkdown(fileContent)
@@ -170,7 +170,7 @@ const DiaryPage = () => {
           </div>
         )}
       </div>
-      <ProgressBar progress={getPercentageOfDay()} />
+      {isToday && <ProgressBar progress={getPercentageOfDay()} />}
     </div>
   )
 }
