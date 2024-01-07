@@ -19,6 +19,7 @@ import {
 import {
   dateStatus,
   getNextDayLink,
+  getPercentageOfDay,
   getPreviousDayLink,
   isDateValid,
   months,
@@ -27,6 +28,7 @@ import { debounce } from 'lodash'
 import { useEffect, useRef, useState } from 'react'
 import moment from 'moment'
 import { FlatButton } from '../components/FlatButton'
+import { ProgressBar } from '../components/ProgressBar'
 
 type ParamsType = {
   year: string
@@ -168,6 +170,7 @@ const DiaryPage = () => {
           </div>
         )}
       </div>
+      <ProgressBar progress={getPercentageOfDay()} />
     </div>
   )
 }

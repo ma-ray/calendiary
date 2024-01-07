@@ -66,3 +66,16 @@ export const getPreviousDayLink = (
 
 export const isDateValid = (year: number, month: number, day: number) =>
   moment([year, month, day]).isValid()
+
+export const getPercentageOfDay = () => {
+  const currentTime = moment()
+  const startOfDay = moment().startOf('day')
+  const endOfDay = moment().endOf('day')
+
+  const elapsedMilliseconds = currentTime.diff(startOfDay)
+  const totalMillisecondsInDay = endOfDay.diff(startOfDay)
+
+  const percentageOfDay = (elapsedMilliseconds / totalMillisecondsInDay) * 100
+
+  return percentageOfDay
+}
