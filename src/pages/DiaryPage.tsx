@@ -36,6 +36,9 @@ type ParamsType = {
 
 const DiaryPage = () => {
   const { year, month, day } = useParams<ParamsType>()
+  const yearNum = Number(year)
+  const monthNum = Number(month)
+  const dayNum = Number(day)
   const navigate = useNavigate()
   const [canEdit, setCanEdit] = useState(false)
   const [loading, setLoading] = useState(true)
@@ -43,33 +46,23 @@ const DiaryPage = () => {
   const editorRef = useRef<MDXEditorMethods>(null)
 
   const debouncedWriteToFile = debounce((content) => {
-    window.ipcRenderer.send('write-diary', year, month, day, content)
+    window.ipcRenderer.send('write-diary', yearNum, monthNum, dayNum, content)
   }, 500)
 
-  const dayIsFuture = moment().isBefore(
-    moment([
-      parseInt(year ?? '2024'),
-      parseInt(month ?? '0'),
-      parseInt(day ?? '1'),
-    ])
-  )
+  const dayIsFuture = moment().isBefore(moment([yearNum, monthNum, dayNum]))
 
   useEffect(() => {
-    if (!isDateValid(day, month, year)) {
-      navigate('/')
-    }
-  }, [day, month, year, navigate])
-
-  useEffect(() => {
-    if (year && month && day) {
-      const isToday = moment([year, month, day]).isSame(moment().startOf('day'))
+    if (isDateValid(yearNum, monthNum, dayNum)) {
+      const isToday = moment([yearNum, monthNum, dayNum]).isSame(
+        moment().startOf('day')
+      )
 
       window.ipcRenderer
-        .invoke('does-diary-exist', year, month, day)
+        .invoke('does-diary-exist', yearNum, monthNum, dayNum)
         .then((diaryExists) => {
           if (isToday || (diaryExists && !dayIsFuture)) {
             window.ipcRenderer
-              .invoke('read-diary', year, month, day)
+              .invoke('read-diary', yearNum, monthNum, dayNum)
               .then((value: string) => setFileContent(value))
               .then(() => setCanEdit(true))
               .catch((error) => {
@@ -80,8 +73,10 @@ const DiaryPage = () => {
           }
           setLoading(false)
         })
+    } else {
+      navigate('/')
     }
-  }, [year, month, day, dayIsFuture])
+  }, [dayIsFuture, yearNum, monthNum, dayNum, navigate])
 
   useEffect(() => {
     editorRef.current?.setMarkdown(fileContent)
@@ -102,9 +97,9 @@ const DiaryPage = () => {
               e.preventDefault()
               window.ipcRenderer.send(
                 'show-diary-page-in-explorer',
-                year,
-                month,
-                day
+                yearNum,
+                monthNum,
+                dayNum
               )
             }}
           />
