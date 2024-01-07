@@ -19,6 +19,7 @@ import {
 import {
   dateStatus,
   getNextDayLink,
+  getPercentageOfDay,
   getPreviousDayLink,
   isDateValid,
   months,
@@ -27,6 +28,7 @@ import { debounce } from 'lodash'
 import { useEffect, useRef, useState } from 'react'
 import moment from 'moment'
 import { FlatButton } from '../components/FlatButton'
+import { ProgressBar } from '../components/ProgressBar'
 
 type ParamsType = {
   year: string
@@ -51,12 +53,12 @@ const DiaryPage = () => {
 
   const dayIsFuture = moment().isBefore(moment([yearNum, monthNum, dayNum]))
 
+  const isToday = moment([yearNum, monthNum, dayNum]).isSame(
+    moment().startOf('day')
+  )
+
   useEffect(() => {
     if (isDateValid(yearNum, monthNum, dayNum)) {
-      const isToday = moment([yearNum, monthNum, dayNum]).isSame(
-        moment().startOf('day')
-      )
-
       window.ipcRenderer
         .invoke('does-diary-exist', yearNum, monthNum, dayNum)
         .then((diaryExists) => {
@@ -76,7 +78,7 @@ const DiaryPage = () => {
     } else {
       navigate('/')
     }
-  }, [dayIsFuture, yearNum, monthNum, dayNum, navigate])
+  }, [dayIsFuture, yearNum, monthNum, dayNum, navigate, isToday])
 
   useEffect(() => {
     editorRef.current?.setMarkdown(fileContent)
@@ -168,6 +170,7 @@ const DiaryPage = () => {
           </div>
         )}
       </div>
+      {isToday && <ProgressBar progress={getPercentageOfDay()} />}
     </div>
   )
 }
