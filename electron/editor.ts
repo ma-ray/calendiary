@@ -1,7 +1,6 @@
 import { IpcMainEvent, IpcMainInvokeEvent, dialog, shell } from 'electron'
-import { store } from './main'
 import { Settings } from '../shared/settings'
-import { getSettings } from './settings'
+import store, { getSettings } from './settings'
 import path from 'node:path'
 import { access, mkdir, readFile, writeFile, readdir } from 'fs/promises'
 import moment from 'moment'
