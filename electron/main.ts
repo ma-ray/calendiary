@@ -1,4 +1,12 @@
-import { app, BrowserWindow, ipcMain, Menu, MenuItem, shell } from 'electron'
+import {
+  app,
+  BrowserWindow,
+  ipcMain,
+  Menu,
+  MenuItem,
+  shell,
+  session,
+} from 'electron'
 import path from 'node:path'
 import {
   availableEntries,
@@ -50,6 +58,15 @@ function createWindow() {
   if (VITE_DEV_SERVER_URL) {
     win.loadURL(VITE_DEV_SERVER_URL)
   } else {
+    session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
+      callback({
+        responseHeaders: {
+          ...details.responseHeaders,
+          'Content-Security-Policy': ["script-src 'self'"],
+        },
+      })
+    })
+
     win.loadFile(path.join(process.env.DIST, 'index.html'))
   }
 
