@@ -1,7 +1,7 @@
 {
   "name": "calendiary",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "digital diary + calendar integrated into one",
   "author": {
     "name": "Raymond Ma",
