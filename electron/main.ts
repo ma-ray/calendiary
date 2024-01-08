@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain, shell } from 'electron'
+import { app, BrowserWindow, ipcMain, Menu, MenuItem, shell } from 'electron'
 import path from 'node:path'
 import {
   availableEntries,
@@ -37,6 +37,7 @@ function createWindow() {
   win = new BrowserWindow({
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
+      spellcheck: false,
     },
   })
 
@@ -56,6 +57,16 @@ function createWindow() {
   win.webContents.setWindowOpenHandler((details) => {
     shell.openExternal(details.url)
     return { action: 'deny' }
+  })
+
+  win.webContents.on('context-menu', (_, params) => {
+    const menu = new Menu()
+    if (params.isEditable) {
+      menu.append(new MenuItem({ label: 'Copy', role: 'copy' }))
+      menu.append(new MenuItem({ label: 'Cut', role: 'cut' }))
+      menu.append(new MenuItem({ label: 'Paste', role: 'paste' }))
+      menu.popup()
+    }
   })
 }
 
