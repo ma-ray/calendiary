@@ -1,4 +1,10 @@
-import { IpcMainEvent, IpcMainInvokeEvent, dialog, shell } from 'electron'
+import {
+  IpcMainEvent,
+  IpcMainInvokeEvent,
+  dialog,
+  ipcMain,
+  shell,
+} from 'electron'
 import { store } from './main'
 import { Settings } from '../shared/settings'
 import { getSettings } from './settings'
