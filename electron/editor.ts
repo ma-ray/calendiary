@@ -157,3 +157,8 @@ export const showDiaryPageInExplorer = async (
     shell.showItemInFolder(diaryDayPath)
   }
 }
+
+export const doesDiaryPathExist = () => {
+  const diaryPath = getSettings().diaryLocation
+  return doesFileExist(diaryPath)
+}

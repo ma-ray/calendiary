@@ -24,9 +24,15 @@ export const SettingsProvider: React.FC<SettingsProviderProps> = ({
   const [loading, setLoading] = useState(true)
 
   const loadSettings = () =>
-    window.ipcRenderer.invoke('get-settings').then((e) => {
-      setSettings(e)
-      setLoading(false)
+    window.ipcRenderer.invoke('does-diary-path-exist').then((res) => {
+      if (res) {
+        window.ipcRenderer.invoke('get-settings').then((e) => {
+          setSettings(e)
+          setLoading(false)
+        })
+      } else {
+        setLoading(false)
+      }
     })
 
   useEffect(() => {

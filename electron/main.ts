@@ -3,6 +3,7 @@ import path from 'node:path'
 import {
   availableEntries,
   doesDiaryDayExist,
+  doesDiaryPathExist,
   openDirectory,
   readDiary,
   showDiaryInExplorer,
@@ -49,7 +50,6 @@ function createWindow() {
   if (VITE_DEV_SERVER_URL) {
     win.loadURL(VITE_DEV_SERVER_URL)
   } else {
-    // win.loadFile('dist/index.html')
     win.loadFile(path.join(process.env.DIST, 'index.html'))
   }
 
@@ -92,10 +92,11 @@ app.whenReady().then(() => {
   ipcMain.handle('read-diary', readDiary)
   ipcMain.handle('open-directory', openDirectory)
   ipcMain.handle('get-settings', getSettings)
-  ipcMain.handle('does-diary-exist', doesDiaryDayExist)
+  ipcMain.handle('does-diary-day-exist', doesDiaryDayExist)
   ipcMain.handle('available-entries', availableEntries)
   ipcMain.on('show-diary-in-explorer', showDiaryInExplorer)
   ipcMain.on('show-diary-page-in-explorer', showDiaryPageInExplorer)
+  ipcMain.handle('does-diary-path-exist', doesDiaryPathExist)
 
   createWindow()
 })
