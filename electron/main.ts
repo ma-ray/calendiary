@@ -43,7 +43,10 @@ function createWindow() {
   win = new BrowserWindow({
     width: 1200,
     height: 800,
-    icon: os.platform() == 'linux' ? path.join(process.env.VITE_PUBLIC, "calendiary.png") : undefined,
+    icon:
+      os.platform() == 'linux'
+        ? path.join(process.env.VITE_PUBLIC, 'calendiary.png')
+        : undefined,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       spellcheck: false,
