@@ -20,7 +20,7 @@ jobs:
         run: yarn lint
 
       - name: Check formatting with Prettier
-        run: yarn prettier ./src ./electron --check
+        run: yarn prettier ./src ./electron ./shared --check
 
   platform-build:
     strategy:
