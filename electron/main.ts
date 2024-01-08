@@ -10,7 +10,6 @@ import {
   showDiaryPageInExplorer,
   writeDiary,
 } from './editor'
-import Store from 'electron-store'
 import { getSettings } from './settings'
 
 // The built directory structure
@@ -30,8 +29,6 @@ process.env.VITE_PUBLIC = app.isPackaged
 let win: BrowserWindow | null
 // 🚧 Use ['ENV_NAME'] avoid vite:define plugin - Vite@2.x
 const VITE_DEV_SERVER_URL = process.env['VITE_DEV_SERVER_URL']
-
-export const store = new Store()
 
 function createWindow() {
   win = new BrowserWindow({
