@@ -10,7 +10,6 @@ import {
   UndoRedo,
   BoldItalicUnderlineToggles,
   BlockTypeSelect,
-  CreateLink,
   CodeToggle,
   MDXEditorMethods,
 } from '@mdxeditor/editor'
@@ -116,7 +115,7 @@ const DiaryPage = () => {
         </div>
       </div>
       <div className="flex flex-col gap-3 mx-auto w-1/2 pt-20">
-        <div className="flex gap-6 px-3 h-12 sticky z-10 top-12 bg-white">
+        <div className="flex gap-6 px-3 h-12 sticky z-[1] top-12 bg-white">
           <h1 className="scroll-m-20 text-4xl font-black tracking-tight">
             {`${months[parseInt(month ?? '0')]} ${day}, ${year}`}
           </h1>
@@ -157,7 +156,6 @@ const DiaryPage = () => {
                       <UndoRedo />
                       <BoldItalicUnderlineToggles />
                       <BlockTypeSelect />
-                      <CreateLink />
                       <CodeToggle />
                     </>
                   ),
