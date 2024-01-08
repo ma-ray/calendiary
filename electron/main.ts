@@ -34,11 +34,12 @@ export const store = new Store()
 
 function createWindow() {
   win = new BrowserWindow({
-    icon: path.join(process.env.VITE_PUBLIC, 'electron-vite.svg'),
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
     },
   })
+
+  win.removeMenu()
 
   // Test active push message to Renderer-process.
   win.webContents.on('did-finish-load', () => {
@@ -55,6 +56,16 @@ function createWindow() {
   win.webContents.setWindowOpenHandler((details) => {
     shell.openExternal(details.url)
     return { action: 'deny' }
+  })
+}
+
+if (!app.requestSingleInstanceLock()) {
+  app.quit()
+} else {
+  app.on('second-instance', () => {
+    if (win) {
+      win.focus()
+    }
   })
 }
 

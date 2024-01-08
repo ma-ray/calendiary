@@ -5,14 +5,11 @@ import {
   headingsPlugin,
   quotePlugin,
   listsPlugin,
-  linkPlugin,
-  linkDialogPlugin,
   markdownShortcutPlugin,
   toolbarPlugin,
   UndoRedo,
   BoldItalicUnderlineToggles,
   BlockTypeSelect,
-  CreateLink,
   CodeToggle,
   MDXEditorMethods,
 } from '@mdxeditor/editor'
@@ -88,33 +85,37 @@ const DiaryPage = () => {
 
   return (
     <div className="h-screen">
-      <Link to="/">
-        <FlatButton className="fixed left-0 top-0" label="home" />
-      </Link>
-      <div className="fixed top-0 right-0">
-        {canEdit && (
-          <FlatButton
-            label="open file location"
-            onClick={(e) => {
-              e.preventDefault()
-              window.ipcRenderer.send(
-                'show-diary-page-in-explorer',
-                yearNum,
-                monthNum,
-                dayNum
-              )
-            }}
-          />
-        )}
-        <Link to={getPreviousDayLink(day ?? '1', month ?? '0', year ?? '2024')}>
-          <FlatButton label="previous day" />
+      <div className="fixed top-0 w-full flex justify-between z-10 bg-white">
+        <Link to="/">
+          <FlatButton label="home" />
         </Link>
-        <Link to={getNextDayLink(day ?? '1', month ?? '0', year ?? '2024')}>
-          <FlatButton label="next day" />
-        </Link>
+        <div>
+          {canEdit && (
+            <FlatButton
+              label="open file location"
+              onClick={(e) => {
+                e.preventDefault()
+                window.ipcRenderer.send(
+                  'show-diary-page-in-explorer',
+                  yearNum,
+                  monthNum,
+                  dayNum
+                )
+              }}
+            />
+          )}
+          <Link
+            to={getPreviousDayLink(day ?? '1', month ?? '0', year ?? '2024')}
+          >
+            <FlatButton label="previous day" />
+          </Link>
+          <Link to={getNextDayLink(day ?? '1', month ?? '0', year ?? '2024')}>
+            <FlatButton label="next day" />
+          </Link>
+        </div>
       </div>
-      <div className="flex flex-col gap-3 mx-auto w-1/2 pt-24">
-        <div className="flex gap-6 px-3">
+      <div className="flex flex-col gap-3 mx-auto w-1/2 pt-20">
+        <div className="flex gap-6 px-3 h-12 sticky z-[1] top-12 bg-white">
           <h1 className="scroll-m-20 text-4xl font-black tracking-tight">
             {`${months[parseInt(month ?? '0')]} ${day}, ${year}`}
           </h1>
@@ -148,8 +149,6 @@ const DiaryPage = () => {
                 headingsPlugin(),
                 quotePlugin(),
                 listsPlugin(),
-                linkPlugin(),
-                linkDialogPlugin({}),
                 markdownShortcutPlugin(),
                 toolbarPlugin({
                   toolbarContents: () => (
@@ -157,7 +156,6 @@ const DiaryPage = () => {
                       <UndoRedo />
                       <BoldItalicUnderlineToggles />
                       <BlockTypeSelect />
-                      <CreateLink />
                       <CodeToggle />
                     </>
                   ),

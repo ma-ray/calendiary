@@ -8,6 +8,7 @@
   productName: 'calendiary',
   directories: {
     output: 'release/${version}',
+    buildResources: 'resources',
   },
   files: ['dist', 'dist-electron'],
   mac: {
