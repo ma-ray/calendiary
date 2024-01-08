@@ -41,7 +41,7 @@ const DiaryPage = () => {
   const navigate = useNavigate()
   const [canEdit, setCanEdit] = useState(false)
   const [loading, setLoading] = useState(true)
-  const [fileContent, setFileContent] = useState('')
+  const [fileContent, setFileContent] = useState<string>('')
   const editorRef = useRef<MDXEditorMethods>(null)
 
   const debouncedWriteToFile = debounce((content) => {
@@ -79,7 +79,7 @@ const DiaryPage = () => {
 
   useEffect(() => {
     editorRef.current?.setMarkdown(fileContent)
-  }, [fileContent])
+  }, [fileContent, canEdit])
 
   if (loading) return <div>loading...</div>
 
