@@ -5,8 +5,6 @@ import {
   headingsPlugin,
   quotePlugin,
   listsPlugin,
-  linkPlugin,
-  linkDialogPlugin,
   markdownShortcutPlugin,
   toolbarPlugin,
   UndoRedo,
@@ -152,8 +150,6 @@ const DiaryPage = () => {
                 headingsPlugin(),
                 quotePlugin(),
                 listsPlugin(),
-                linkPlugin(),
-                linkDialogPlugin({}),
                 markdownShortcutPlugin(),
                 toolbarPlugin({
                   toolbarContents: () => (
