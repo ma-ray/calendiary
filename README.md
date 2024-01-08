@@ -2,7 +2,7 @@
 
 calendiary is desktop application that lets you have an integrated digital calendar and diary together. You can create a new daily entry where you can write and reflect about your day. You can also look back at previous entries you made through the calendar.
 
-The diary is stored in markdown files through the following folder structure: `{year}/{month}/{day}/{month}-{day}-{year}.md`. calendiary allows you to create a new diary by selecting a new folder or load up and existing one to view or create new entries.
+The diary is stored in markdown files through the following folder structure: `{year}/{month}/{day}/{month}-{day}-{year}.md`. calendiary allows you to create a new diary by selecting a new folder or load up an existing one to view or create new dairy entries.
 
 ## Photos
 
@@ -14,7 +14,7 @@ This is the home page of calendiary. You can scroll down and see the different m
 ### Diary Page
 
 <img src="./docs/assets/calendiary-2.png" />
-This is the diary page for a diary entry. You can make changes to the diary entry with the Markdown editor, and go through the next and previous days. A progress bar is at the bottom of the page which represents how much percentage of the day has passed.
+This is the diary page for a diary entry. You can make changes to the diary entry with the Markdown editor, and go through the next and previous days. If it's your first time on the current day's diary page, the Markdown file corresponding to the diary entry will be created automatically. A progress bar is at the bottom of the page showing how much percent of the day has passed.
 
 ## Downloads
 
