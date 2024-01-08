@@ -14,6 +14,7 @@ export const writeDiary = (
   data: string
 ) => {
   const settings = getSettings()
+  if (!settings) return Promise.resolve()
   const trueMonth = month + 1
   const diaryDayPath = path.join(
     settings.diaryLocation,
@@ -30,6 +31,7 @@ export const readDiary = async (
   day: number
 ) => {
   const settings = getSettings()
+  if (!settings) return ''
   const trueMonth = month + 1
   const diaryDayPath = path.join(
     settings.diaryLocation,
@@ -60,6 +62,7 @@ export const doesDiaryDayExist = async (
   day: number
 ) => {
   const settings = getSettings()
+  if (!settings) return false
   const trueMonth = month + 1
   const diaryDayPath = path.join(
     settings.diaryLocation,
@@ -95,8 +98,10 @@ const doesFileExist = async (path: string) => {
 }
 
 export const availableEntries = async (_: IpcMainInvokeEvent, year: number) => {
-  const diaryPath = getSettings().diaryLocation
+  const settings = getSettings()
   const availableEntries = new Set<string>()
+  if (!settings) return availableEntries
+  const diaryPath = settings.diaryLocation
 
   if (!(await doesFileExist(path.join(diaryPath, `${year}`)))) {
     return availableEntries
@@ -137,8 +142,11 @@ export const availableEntries = async (_: IpcMainInvokeEvent, year: number) => {
 }
 
 export const showDiaryInExplorer = () => {
-  const diaryPath = getSettings().diaryLocation
-  shell.openPath(diaryPath)
+  const settings = getSettings()
+  if (settings) {
+    const diaryPath = settings.diaryLocation
+    shell.openPath(diaryPath)
+  }
 }
 
 export const showDiaryPageInExplorer = async (
@@ -147,18 +155,23 @@ export const showDiaryPageInExplorer = async (
   month: number,
   day: number
 ) => {
-  const diaryPath = getSettings().diaryLocation
-  const trueMonth = month + 1
-  const diaryDayPath = path.join(
-    diaryPath,
-    `${year}/${trueMonth}/${day}/${trueMonth}-${day}-${year}.md`
-  )
-  if (await doesFileExist(diaryDayPath)) {
-    shell.showItemInFolder(diaryDayPath)
+  const settings = getSettings()
+  if (settings) {
+    const diaryPath = settings.diaryLocation
+    const trueMonth = month + 1
+    const diaryDayPath = path.join(
+      diaryPath,
+      `${year}/${trueMonth}/${day}/${trueMonth}-${day}-${year}.md`
+    )
+    if (await doesFileExist(diaryDayPath)) {
+      shell.showItemInFolder(diaryDayPath)
+    }
   }
 }
 
 export const doesDiaryPathExist = () => {
-  const diaryPath = getSettings().diaryLocation
+  const settings = getSettings()
+  if (!settings) return false
+  const diaryPath = settings.diaryLocation
   return doesFileExist(diaryPath)
 }
