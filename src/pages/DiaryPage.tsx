@@ -57,7 +57,7 @@ const DiaryPage = () => {
   useEffect(() => {
     if (isDateValid(yearNum, monthNum, dayNum)) {
       window.ipcRenderer
-        .invoke('does-diary-exist', yearNum, monthNum, dayNum)
+        .invoke('does-diary-day-exist', yearNum, monthNum, dayNum)
         .then((diaryExists) => {
           if (isToday || (diaryExists && !dayIsFuture)) {
             window.ipcRenderer
