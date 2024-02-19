@@ -15,7 +15,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@mdxeditor/editor": "^2.2.0",
+    "@mdxeditor/editor": "^2.9.0",
     "@radix-ui/react-slot": "^1.0.2",
     "calendar-base": "^2.0.1",
     "class-variance-authority": "^0.7.0",
